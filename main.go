@@ -1,33 +1,125 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"os/exec"
 	"strconv"
 )
 
-
 func main() {
 
-	for i := 0; i < 20; i++ {
-		quali := (i + 1) * 5
+	images := 13
+	benchmark_size_entries := 20
+	benchmark_size_jpg := make([][]int, images)
+	for k := range benchmark_size_jpg {
+		benchmark_size_jpg[k] = make([]int, benchmark_size_entries)
+	}
+	benchmark_size_webp := make([][]int, images)
+	for k := range benchmark_size_webp {
+		benchmark_size_webp[k] = make([]int, benchmark_size_entries)
+	}
 
-		app := "magick"
+	for j := 1; j < 14; j++ {
 
-		args_jpg := []string{"-quality", strconv.Itoa(quali), "../webpthumbnails/Ursprungsdateien/wallpaper.png[0]", "-background", "white", "-alpha", "remove", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../webpthumbnails/Comparison/output_" + strconv.Itoa(quali) + ".jpg"}
-		args_webp := []string{"-quality", strconv.Itoa(quali), "../webpthumbnails/Ursprungsdateien/wallpaper.png[0]", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../webpthumbnails/Comparison/output_" + strconv.Itoa(quali) + ".webp"}
+		for i := 0; i < 20; i++ {
+			quali := (i + 1) * 5
 
-		cmd_jpg := exec.Command(app, args_jpg...)
-		cmd_webp := exec.Command(app, args_webp...)
-		_, err := cmd_jpg.Output()
-		if err != nil {
-			fmt.Println(err.Error())
-			return
-		}
-		_, err = cmd_webp.Output()
-		if err != nil {
-			fmt.Println(err.Error())
-			return
+			app := "magick"
+
+			var file_endung string
+			file_endung = "jpg"
+
+			switch j {
+			case 1:
+				file_endung = "jfif"
+			case 2:
+				file_endung = "png"
+			case 3:
+				file_endung = "webp"
+			case 4:
+				file_endung = "jpg"
+			case 5:
+				file_endung = "jpg"
+			case 6:
+				file_endung = "jfif"
+			case 7:
+				file_endung = "jpg"
+			case 8:
+				file_endung = "jpeg"
+			case 9:
+				file_endung = "png"
+			case 10:
+				file_endung = "jpg"
+			case 11:
+				file_endung = "jpg"
+			case 12:
+				file_endung = "jpg"
+			case 13:
+				file_endung = "jpg"
+			}
+
+			args_jpg := []string{"-quality", strconv.Itoa(quali), "../Ursprungsdateien/" + strconv.Itoa(j) + "." + file_endung + "[0]", "-background", "white", "-alpha", "remove", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../Comparison/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + ".jpg"}
+			args_webp := []string{"-quality", strconv.Itoa(quali), "../Ursprungsdateien/" + strconv.Itoa(j) + "." + file_endung + "[0]", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../Comparison/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + ".webp"}
+
+			cmd_jpg := exec.Command(app, args_jpg...)
+			cmd_webp := exec.Command(app, args_webp...)
+			_, err := cmd_jpg.Output()
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+			_, err = cmd_webp.Output()
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+
+			info_jpg, err := os.Stat("../Comparison/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + ".jpg")
+			if err != nil {
+				fmt.Println(err)
+			}
+			size_jpg := info_jpg.Size()
+			benchmark_size_jpg[j-1][i] = int(size_jpg)
+
+			info_webp, err := os.Stat("../Comparison/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + ".webp")
+			if err != nil {
+				fmt.Println(err)
+			}
+			size_webp := info_webp.Size()
+			benchmark_size_webp[j-1][i] = int(size_webp)
+
 		}
 	}
+
+	file_jpg, err := os.OpenFile("../Comparison/output_jpg.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println(err)
+	}
+	datawriter_jpg := bufio.NewWriter(file_jpg)
+	for k := 0; k < images; k++ {
+		for t := 0; t < 20; t++ {
+			_, _ = datawriter_jpg.WriteString(strconv.Itoa(k+1) + "\t" + strconv.Itoa((t+1)*5) + "\t" + strconv.Itoa(benchmark_size_jpg[k][t]))
+			_, _ = datawriter_jpg.WriteString("\n")
+		}
+		_, _ = datawriter_jpg.WriteString("\n")
+	}
+	datawriter_jpg.Flush()
+	file_jpg.Close()
+
+	file_webp, err := os.OpenFile("../Comparison/output_webp.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println(err)
+	}
+	datawriter_webp := bufio.NewWriter(file_webp)
+	for k := 0; k < images; k++ {
+		for t := 0; t < 20; t++ {
+			_, _ = datawriter_webp.WriteString(strconv.Itoa(k+1) + "\t" + strconv.Itoa((t+1)*5) + "\t" + strconv.Itoa(benchmark_size_webp[k][t]))
+			_, _ = datawriter_webp.WriteString("\n")
+		}
+		_, _ = datawriter_webp.WriteString("\n")
+	}
+	datawriter_webp.Flush()
+	file_webp.Close()
 }
