@@ -10,8 +10,8 @@ import (
 
 func main() {
 
-	images := 13
-	benchmark_size_entries := 20
+	images := 20
+	benchmark_size_entries := 20 //Anzahl Versionen pro Image
 	benchmark_size_jpg := make([][]int, images)
 	for k := range benchmark_size_jpg {
 		benchmark_size_jpg[k] = make([]int, benchmark_size_entries)
@@ -21,7 +21,7 @@ func main() {
 		benchmark_size_webp[k] = make([]int, benchmark_size_entries)
 	}
 
-	for j := 1; j < 14; j++ {
+	for j := 1; j <= images; j++ {
 
 		for i := 0; i < 20; i++ {
 			quali := (i + 1) * 5
@@ -37,27 +37,41 @@ func main() {
 			case 2:
 				file_endung = "png"
 			case 3:
-				file_endung = "webp"
+				file_endung = "avif"
 			case 4:
-				file_endung = "jpg"
+				file_endung = "webp"
 			case 5:
 				file_endung = "jpg"
 			case 6:
-				file_endung = "jfif"
-			case 7:
 				file_endung = "jpg"
-			case 8:
-				file_endung = "jpeg"
-			case 9:
+			case 7:
 				file_endung = "png"
+			case 8:
+				file_endung = "svg"
+			case 9:
+				file_endung = "jfif"
 			case 10:
 				file_endung = "jpg"
 			case 11:
-				file_endung = "jpg"
+				file_endung = "jpeg"
 			case 12:
-				file_endung = "jpg"
+				file_endung = "png"
 			case 13:
+				file_endung = "svg"
+			case 14:
 				file_endung = "jpg"
+			case 15:
+				file_endung = "jpg"
+			case 16:
+				file_endung = "jpg"
+			case 17:
+				file_endung = "jpg"
+			case 18:
+				file_endung = "CR2"
+			case 19:
+				file_endung = "png"
+			case 20:
+				file_endung = "tiff"
 			}
 
 			args_jpg := []string{"-quality", strconv.Itoa(quali), "../Ursprungsdateien/" + strconv.Itoa(j) + "." + file_endung + "[0]", "-background", "white", "-alpha", "remove", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../Comparison/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + ".jpg"}
