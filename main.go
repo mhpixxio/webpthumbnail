@@ -23,7 +23,7 @@ func main() {
 
 	for j := 1; j <= images; j++ {
 
-		for i := 0; i < 20; i++ {
+		for i := 0; i < benchmark_size_entries; i++ {
 			quali := (i + 1) * 5
 
 			app := "magick"
@@ -82,12 +82,10 @@ func main() {
 			_, err := cmd_jpg.Output()
 			if err != nil {
 				fmt.Println(err)
-				return
 			}
 			_, err = cmd_webp.Output()
 			if err != nil {
 				fmt.Println(err)
-				return
 			}
 
 			info_jpg, err := os.Stat("../Comparison/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + ".jpg")
@@ -113,11 +111,17 @@ func main() {
 	}
 	datawriter_jpg := bufio.NewWriter(file_jpg)
 	for k := 0; k < images; k++ {
-		for t := 0; t < 20; t++ {
-			_, _ = datawriter_jpg.WriteString(strconv.Itoa(k+1) + "\t" + strconv.Itoa((t+1)*5) + "\t" + strconv.Itoa(benchmark_size_jpg[k][t]))
-			_, _ = datawriter_jpg.WriteString("\n")
+		for t := 0; t < benchmark_size_entries; t++ {
+			_, err = datawriter_jpg.WriteString(strconv.Itoa(k+1) + "\t" + strconv.Itoa((t+1)*5) + "\t" + strconv.Itoa(benchmark_size_jpg[k][t]))
+			_, err2 := datawriter_jpg.WriteString("\n")
+			if err != nil || err2 != nil {
+				fmt.Println(err)
+			}
 		}
-		_, _ = datawriter_jpg.WriteString("\n")
+		_, err := datawriter_jpg.WriteString("\n")
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 	datawriter_jpg.Flush()
 	file_jpg.Close()
@@ -128,11 +132,17 @@ func main() {
 	}
 	datawriter_webp := bufio.NewWriter(file_webp)
 	for k := 0; k < images; k++ {
-		for t := 0; t < 20; t++ {
-			_, _ = datawriter_webp.WriteString(strconv.Itoa(k+1) + "\t" + strconv.Itoa((t+1)*5) + "\t" + strconv.Itoa(benchmark_size_webp[k][t]))
-			_, _ = datawriter_webp.WriteString("\n")
+		for t := 0; t < benchmark_size_entries; t++ {
+			_, err = datawriter_webp.WriteString(strconv.Itoa(k+1) + "\t" + strconv.Itoa((t+1)*5) + "\t" + strconv.Itoa(benchmark_size_webp[k][t]))
+			_, err2 := datawriter_webp.WriteString("\n")
+			if err != nil || err2 != nil {
+				fmt.Println(err)
+			}
 		}
-		_, _ = datawriter_webp.WriteString("\n")
+		_, err = datawriter_webp.WriteString("\n")
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 	datawriter_webp.Flush()
 	file_webp.Close()
