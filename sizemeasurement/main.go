@@ -74,8 +74,8 @@ func main() {
 				file_endung = "tiff"
 			}
 
-			args_jpg := []string{"-quality", strconv.Itoa(quali), "../../Ursprungsdateien/" + strconv.Itoa(j) + "." + file_endung + "[0]", "-background", "white", "-alpha", "remove", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../../Comparison_size/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + ".jpg"}
-			args_webp := []string{"-quality", strconv.Itoa(quali), "../../Ursprungsdateien/" + strconv.Itoa(j) + "." + file_endung + "[0]", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../../Comparison_size/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + ".webp"}
+			args_jpg := []string{"-quality", strconv.Itoa(quali), "../../Ursprungsdateien/" + strconv.Itoa(j) + "." + file_endung + "[0]", "-background", "white", "-alpha", "remove", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../../Comparison_size/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + "_jpg.jpg"}
+			args_webp := []string{"-quality", strconv.Itoa(quali), "../../Ursprungsdateien/" + strconv.Itoa(j) + "." + file_endung + "[0]", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../../Comparison_size/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + "_webp.webp"}
 
 			cmd_jpg := exec.Command(app, args_jpg...)
 			cmd_webp := exec.Command(app, args_webp...)
@@ -88,14 +88,14 @@ func main() {
 				fmt.Println(err)
 			}
 
-			info_jpg, err := os.Stat("../../Comparison_size/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + ".jpg")
+			info_jpg, err := os.Stat("../../Comparison_size/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + "_jpg.jpg")
 			if err != nil {
 				fmt.Println(err)
 			}
 			size_jpg := info_jpg.Size()
 			benchmark_size_jpg[j-1][i] = int(size_jpg)
 
-			info_webp, err := os.Stat("../../Comparison_size/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + ".webp")
+			info_webp, err := os.Stat("../../Comparison_size/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + "_webp.webp")
 			if err != nil {
 				fmt.Println(err)
 			}

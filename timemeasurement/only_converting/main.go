@@ -75,8 +75,8 @@ func main() {
 				file_endung = "tiff"
 			}
 
-			args_jpg := []string{"-quality", strconv.Itoa(quali), "../../../Ursprungsdateien/" + strconv.Itoa(j) + "." + file_endung + "[0]", "-background", "white", "-alpha", "remove", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../../../Comparison_time_converting/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + ".jpg"}
-			args_webp := []string{"-quality", strconv.Itoa(quali), "../../../Ursprungsdateien/" + strconv.Itoa(j) + "." + file_endung + "[0]", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../../../Comparison_time_converting/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + ".webp"}
+			args_jpg := []string{"-quality", strconv.Itoa(quali), "../../../Ursprungsdateien/" + strconv.Itoa(j) + "." + file_endung + "[0]", "-background", "white", "-alpha", "remove", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../../../Comparison_time_converting/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + "_jpg.jpg"}
+			args_webp := []string{"-quality", strconv.Itoa(quali), "../../../Ursprungsdateien/" + strconv.Itoa(j) + "." + file_endung + "[0]", "-auto-orient", "-resize", "1920x1920", "+profile", "'!exif,!xmp,!iptc,!8bim,*'", "-strip", "-units", "PixelsPerInch", "-density", "72", "../../../Comparison_time_converting/output_" + strconv.Itoa(j) + "_" + strconv.Itoa(quali) + "_webp.webp"}
 
 			start := time.Now()
 			cmd_jpg := exec.Command(app, args_jpg...)
